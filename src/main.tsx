@@ -4,12 +4,32 @@ import './index.css'
 import HomePage from './pages/HomePage.tsx'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+import LibraryPage from './pages/LibraryPage.tsx';
+import Layout from './Layout.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: HomePage,
+    Component: Layout,
+    children: [
+      {
+        index: true,
+        Component: HomePage,
+      },
+      {
+        path: '/library',
+        Component: LibraryPage,
+      }
+    ],
   },
+  // {
+  //   path: '/notifications',
+  //   Component: NotificationsPage,
+  // },
+  // {
+  //   path: '/profile',
+  //   Component: ProfilePage,
+  // }
 ]);
 
 createRoot(document.getElementById('root')!).render(

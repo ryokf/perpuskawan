@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import Header from '../components/layout/Header';
 import CategoryTabs from '../components/ui/CategoryTabs';
 import BookCard from '../components/ui/BookCard';
-import BottomNav from '../components/layout/BottomNav';
 import SearchBar from '../components/ui/SearchBar';
 
 function HomePage() {
@@ -40,8 +38,6 @@ function HomePage() {
   return (
     <div className="min-h-screen">
       {/* <Header /> */}
-      <h1 className="text-xl font-semibold px-5 py-5">Perpuskawan</h1>
-      
       <main className="container px-5 mx-auto pb-24">
         <div className="flex items-center mb-6 justify-between">
           <h1 className="text-2xl font-bold mb-6">Mau Pinjam Buku Apa Hari ini?</h1>
@@ -49,7 +45,7 @@ function HomePage() {
         </div>
 
         <SearchBar></SearchBar>
-        
+
         <CategoryTabs
           categories={categories}
           activeCategory={activeCategory}
@@ -78,7 +74,7 @@ function HomePage() {
           </div>
         </section>
       </main>
-      <BottomNav />
+
     </div>
   )
 }
