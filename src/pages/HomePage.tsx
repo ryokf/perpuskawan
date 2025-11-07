@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import CategoryTabs from '../components/ui/CategoryTabs';
-import BookCard from '../components/ui/BookCard';
-import SearchBar from '../components/ui/SearchBar';
+import CategoryTabs from '../components/CategoryTabs';
+import BookCard from '../components/BookCard';
+import SearchBar from '../components/SearchBar';
 
 function HomePage() {
   const [activeCategory, setActiveCategory] = useState('Fiction');

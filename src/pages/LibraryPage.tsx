@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react';
-import LibraryTabs from '../components/ui/LibraryTabs';
-import BookListItem from '../components/ui/BookListItem';
+import LibraryTabs from '../components/LibraryTabs';
+import BookListItem from '../components/BookListItem';
 
 interface Book {
     id: string;

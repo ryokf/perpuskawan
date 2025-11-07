@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type Book } from '../../types/Book';
+import { type Book } from '../types/Book';
 
 type BookCardProps = Book;
 
