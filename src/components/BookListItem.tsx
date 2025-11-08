@@ -7,7 +7,7 @@ interface BookListItemProps {
     rating: number;
     available: boolean;
     imageUrl: string;
-}
+}   
 
 const BookListItem: FC<BookListItemProps> = ({ title, author, rating, available, imageUrl }) => {
     return (

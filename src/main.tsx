@@ -6,6 +6,8 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import LibraryPage from './pages/LibraryPage.tsx';
 import Layout from './Layout.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
+import NotificationPage from './pages/NotificationPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,17 +21,17 @@ const router = createBrowserRouter([
       {
         path: '/library',
         Component: LibraryPage,
+      },
+      {
+        path: '/notifications',
+        Component: NotificationPage,
+      },
+      {
+        path: '/profile',
+        Component: ProfilePage,
       }
     ],
   },
-  // {
-  //   path: '/notifications',
-  //   Component: NotificationsPage,
-  // },
-  // {
-  //   path: '/profile',
-  //   Component: ProfilePage,
-  // }
 ]);
 
 createRoot(document.getElementById('root')!).render(
