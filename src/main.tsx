@@ -8,6 +8,8 @@ import LibraryPage from './pages/LibraryPage.tsx';
 import Layout from './Layout.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
 import NotificationPage from './pages/NotificationPage.tsx';
+import BookDetailPage from './pages/BookDetailPage.tsx';
+import SearchResultPage from './pages/SearchResultPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -29,9 +31,17 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         Component: ProfilePage,
-      }
+      },
     ],
   },
+  {
+    path: '/books/:id',
+    Component: BookDetailPage,
+  },
+  {
+    path: '/search',
+    Component: SearchResultPage,
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(

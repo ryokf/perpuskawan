@@ -6,7 +6,7 @@ type BookCardProps = Book;
 
 const BookCard: FC<BookCardProps> = ({ title, category, rating, available, imageUrl }) => {
   return (
-    <div className="overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+    <a href='/books/1' className="overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
       <img src={imageUrl} alt={title} className="object-cover w-full aspect-3/4" />
       <div className="p-3">
         <h3 className="text-sm font-medium text-gray-800 truncate">{title}</h3>
@@ -21,7 +21,7 @@ const BookCard: FC<BookCardProps> = ({ title, category, rating, available, image
           </span>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 
