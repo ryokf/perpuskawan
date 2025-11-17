@@ -5,4 +5,16 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://37b611198025.ngrok-free.app/api/',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      },
+    },
+  },
 })

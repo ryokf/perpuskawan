@@ -1,8 +1,9 @@
 export interface Book {
-  id: string;
+  id: number;
   title: string;
+  description?: string;
   category: string;
-  rating: number;
-  available: boolean;
-  imageUrl: string;
+  rating?: number;
+  isAvailable: boolean;
+  photo: string;
 }

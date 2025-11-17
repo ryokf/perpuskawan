@@ -1,39 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Book } from '../types/Book';
 import CategoryTabs from '../components/CategoryTabs';
 import BookCard from '../components/BookCard';
 import SearchBar from '../components/SearchBar';
+import { fetchBookData } from '../services/bookService';
+import { getAllCategories } from '../services/categoryService';
 
 function HomePage() {
-  const [activeCategory, setActiveCategory] = useState('Fiction');
+  const [activeCategory, setActiveCategory] = useState(1);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [categories, setCategories] = useState([]);
 
-  // Sample data
-  const categories = ['Fiction', 'Non Fiction', 'Comic'];
-  const popularBooks = [
-    {
-      id: 'book1',
-      title: 'Sejarah Filsafat Barat',
-      category: 'Non Fiction',
-      rating: 5,
-      available: true,
-      imageUrl: 'https://picsum.photos/200/300'
-    },
-    {
-      id: 'book2',
-      title: 'Filsafat untuk Pemula',
-      category: 'Non Fiction',
-      rating: 4.5,
-      available: false,
-      imageUrl: 'https://picsum.photos/200/301'
-    },
-    {
-      id: 'book3',
-      title: 'Introduction to Philosophy',
-      category: 'Non Fiction',
-      rating: 4.8,
-      available: true,
-      imageUrl: 'https://picsum.photos/200/302'
-    }
-  ];
+  const fetchBooks = async (categoryId: number) => {
+    const booksData = await fetchBookData(categoryId);
+    setBooks(booksData);
+  }
+
+  const fetchCategories = async () => {
+    const categories = await getAllCategories();
+    setCategories(categories);
+  }
+
+  useEffect(() => {
+    fetchBooks(activeCategory);
+    fetchCategories();
+  }, [activeCategory]);
+
+  const handleCategoryChange = (categoryId: number) => {
+    setActiveCategory(categoryId);
+    fetchBooks(categoryId);
+  }
+  
+  console.log(activeCategory);
 
   return (
     <div className="min-h-screen">
@@ -49,7 +47,7 @@ function HomePage() {
         <CategoryTabs
           categories={categories}
           activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
+          onCategoryChange={handleCategoryChange}
         />
 
         {/* <section className="mt-6">
@@ -68,7 +66,7 @@ function HomePage() {
 
         <section className="mt-4">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {popularBooks.map((book) => (
+            {books.map((book) => (
               <BookCard key={book.id} {...book} />
             ))}
           </div>
