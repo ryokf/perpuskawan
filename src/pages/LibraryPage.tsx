@@ -1,55 +1,84 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import LibraryTabs from '../components/LibraryTabs';
 import BookListItem from '../components/BookListItem';
-
-interface Book {
-    id: string;
-    title: string;
-    author: string;
-    rating: number;
-    available: boolean;
-    imageUrl: string;
-}
+import getLoansData from '../services/loanServices';
 
 const LibraryPage: FC = () => {
     const [activeTab, setActiveTab] = useState('Saved list');
+    const [books, setBooks] = useState([]);
     const tabs = ['Saved list', 'On borrow', 'Returned'];
 
     // Sample data - replace with real data later
-    const books: Book[] = [
-        {
-            id: '1',
-            title: 'Fisika Kelas XI',
-            author: 'Ni Ketut Lasmi',
-            rating: 4.9,
-            available: true,
-            imageUrl: 'https://picsum.photos/200/300'
-        },
-        {
-            id: '2',
-            title: 'Fisika Teknik',
-            author: 'Muhammad Arsyad',
-            rating: 4.9,
-            available: true,
-            imageUrl: 'https://picsum.photos/200/301'
-        },
-        {
-            id: '3',
-            title: 'Pengantar Fisika Modern',
-            author: 'Prof.Dr.Tomo Djudin',
-            rating: 4.9,
-            available: true,
-            imageUrl: 'https://picsum.photos/200/302'
-        },
-        {
-            id: '4',
-            title: 'Fisika Dasar',
-            author: 'Philip Kristanto',
-            rating: 4.8,
-            available: true,
-            imageUrl: 'https://picsum.photos/200/303'
+    const sample = 
+            [
+                {book: {
+                    id: 1,
+                    title: 'Fisika Kelas XI',
+                    writer: {
+                        name: 'Suhardi'
+                    },
+                    available: false,
+                    photo: 'https://picsum.photos/200/300',
+                    category: { category: 'Science' }
+                }},
+                {book: {
+                    id: 2,
+                    title: 'Fisika Teknik',
+                    writer: {
+                        name: 'Muhammad Arsyad'
+                    },
+                    available: true,
+                    photo: 'https://picsum.photos/200/301',
+                    category: { category: 'Science' }
+                }},
+                {book: {
+                    id: 3,
+                    title: 'Pengantar Fisika Modern',
+                    writer: {
+                        name: 'Prof.Dr.Tomo Djudin'
+                    },
+                    available: true,
+                    photo: 'https://picsum.photos/200/302',
+                    category: { category: 'Science' }
+                }},
+                {book   : {
+                    id: 4,
+                    title: 'Fisika Dasar',
+                    writer: {
+                        name: 'Philip Kristanto'
+                    },
+                    available: true,
+                    photo: 'https://picsum.photos/200/303',
+                    category: { category: 'Science' }
+                }}
+            ]
+    
+
+    const fetchLoansData = async (activeTab) => {
+        const data = await getLoansData()
+        if(activeTab === 'On borrow') {
+            const filteredData = data.filter((loan) => !loan.isDone);
+            setBooks(filteredData);
+            return;
         }
-    ];
+        if(activeTab === 'Returned') {
+            const filteredData = data.filter((loan) => loan.isDone);
+            setBooks(filteredData);
+            return;
+        }
+        setBooks(data); // Replace sample with data from getLoansData when available
+    }
+
+    useEffect(() => {
+        if (activeTab === 'On borrow' || activeTab === 'Returned') {
+            fetchLoansData(activeTab);
+        } else {
+            // fetchLoansData();
+            setBooks(sample);
+        }
+    }, [activeTab]);
+
+    console.log('Loans data in LibraryPage:', books);
 
     return (
         <div className="min-h-screen">
@@ -72,7 +101,8 @@ const LibraryPage: FC = () => {
                     {books.map((book) => (
                         <BookListItem
                             key={book.id}
-                            {...book}
+                            {...book.book}
+                            duedate={book.returnDate}
                         />
                     ))}
                 </div>

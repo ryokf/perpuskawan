@@ -1,5 +1,6 @@
 import type { Book, DetailBook } from '../types/Book';
 import API_URL from '../config/apiUrl';
+import type { Loan } from '../types/Loan';
 
 const fetchBookData = async (categoryId: number, query: string): Promise<Book[]> => {
     try {
@@ -64,8 +65,8 @@ const getDetailBook = async (bookId: number): Promise<DetailBook | null> => {
         const result = await data.json();
         console.log(result.data.loans.length)
         const loanNotDone = result.data.loans.length > 0 
-            ? result.data?.loans.map((loan) => {
-                if (!loan.is_done) {
+            ? result.data?.loans.map((loan: Loan) => {
+                if (!loan.isDone) {
                     return 1;
                 }
             }) 
