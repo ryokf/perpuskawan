@@ -1,9 +1,11 @@
 import { type FC } from 'react';
 
-const SearchBar: FC = () => {
+const SearchBar: FC<{ onChange: (query: string) => void }> = ({ onChange }) => {
+
     return (
         <div className="relative flex-1 max-w-2xl border border-gray-400 rounded-full overflow-hidden">
             <input
+                onKeyUp={(e) => onChange(e.currentTarget.value)}
                 type="text"
                 placeholder="Search any books"
                 className="w-full py-2 pl-10 pr-4 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"

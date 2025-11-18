@@ -1,13 +1,14 @@
 import { type FC } from 'react';
 
 import { type Book } from '../types/Book';
+import LazyImage from './LazyImage';
 
 type BookCardProps = Book;
 
 const BookCard: FC<BookCardProps> = ({id, title, category, rating, isAvailable, photo }) => {
   return (
     <a href={`/books/${id}`} className="overflow-hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-      <img src={photo} alt={title} className="object-cover w-full aspect-3/4" />
+      <LazyImage src={photo} alt={title} className="object-cover w-full aspect-3/4" placeholderClassName="aspect-3/4" />
       <div className="p-3">
         <h3 className="text-sm font-medium text-gray-800 truncate">{title}</h3>
         <p className="mt-1 text-xs text-gray-500">{category}</p>

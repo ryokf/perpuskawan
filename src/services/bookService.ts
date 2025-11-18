@@ -1,9 +1,16 @@
 import type { Book } from '../types/Book';
 import API_URL from '../config/apiUrl';
 
-const fetchBookData = async (categoryId: number): Promise<Book[]> => {
+const fetchBookData = async (categoryId: number, query: string): Promise<Book[]> => {
     try {
-        const data = await fetch(API_URL + '/books?category_id=' + categoryId, {
+        let url;
+        if(query === '') {
+            url = API_URL + '/books?category_id=' + categoryId;
+        }else{
+            url = API_URL + '/books?category_id=' + categoryId + '&search=' + encodeURIComponent(query);
+        }
+
+        const data = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
