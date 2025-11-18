@@ -1,12 +1,30 @@
-import { type FC, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { type FC, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import BookInfoItem from '../components/BookInfoItem';
 import ReviewItem from '../components/ReviewItem';
 import BorrowConfirmation from '../components/BorrowConfirmation';
+import { getDetailBook } from '../services/bookService';
+import type { DetailBook } from '../types/Book';
+// import type { Book } from '../types/Book';
 
 const BookDetailPage: FC = () => {
     const navigate = useNavigate();
     const [showBorrowConfirmation, setShowBorrowConfirmation] = useState(false);
+    const [book, setBook] = useState<DetailBook | null>(null);
+    const params = useParams();
+    const bookId = Number(params.id); // Replace with actual book ID as needed
+
+    const fetchBookDetail = async (bookId: number) => {
+        const data = await getDetailBook(bookId);
+        setBook(data);
+    }
+
+    useEffect(() => {
+        // Assuming bookId is 1 for demonstration; replace with actual ID as needed
+        fetchBookDetail(bookId);
+    }, []);
+
+    console.log('Book detail:', book);
 
     const handleBorrow = () => {
         setShowBorrowConfirmation(true);
@@ -19,7 +37,9 @@ const BookDetailPage: FC = () => {
 
     const handleCancel = () => {
         setShowBorrowConfirmation(false);
-    }; return (
+    };
+
+    return (
         <div className="min-h-screen bg-white">
             {/* Header */}
             <div className="fixed top-0 left-0 right-0 z-10 bg-white">
@@ -45,31 +65,29 @@ const BookDetailPage: FC = () => {
                 {/* Book Cover */}
                 <div className="relative aspect-3/4 overflow-hidden p-12  ">
                     <img
-                        src="https://picsum.photos/800/600"
-                        alt="Sejarah Filsafat Barat"
+                        src={book?.photo || 'https://via.placeholder.com/300x400?text=No+Image'}
+                        alt={book?.title || "Book Cover"}
                         className="w-full h-full object-cover rounded-2xl"
                     />
                 </div>
-
                 {/* Book Info */}
                 <div className="pb-6">
                     <span className="inline-block px-3 py-1 mb-3 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                        Category
+                        {book?.category.category}
                     </span>
                     <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                        Sejarah Filsafat Barat
+                        {book?.title || 'Book Title'}
                     </h1>
                     <p className="text-gray-600 text-sm mb-6">
-                        Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                        {book?.description || "No description available."}
                     </p>
 
                     {/* Book Details Grid */}
                     <div className="grid grid-cols-2 gap-6 mb-6">
-                        <BookInfoItem label="Queue" value="0 Person" />
+                        <BookInfoItem label="Queue" value={`${book?.queueCount == 0 ? "There is no queue" : `${book?.queueCount} Person`}`} />
                         <BookInfoItem label="Borrowed by" value="240 Person" />
-                        <BookInfoItem label="Publisher" value="Erlangga" />
-                        <BookInfoItem label="Writer" value="Sandra Cisneros" />
-                        <BookInfoItem label="Language" value="Indonesia" />
+                        <BookInfoItem label="Writer" value={book?.writer?.name || ""} />
+                        <BookInfoItem label="Language" value={book?.language || ""} />
                     </div>
 
                     <button className="text-blue-600 text-sm font-medium">
@@ -118,15 +136,18 @@ const BookDetailPage: FC = () => {
                     <button className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium">
                         AI
                     </button>
+                    
                     <button
                         onClick={handleBorrow}
-                        className="flex-1 py-3 bg-blue-600 rounded-lg text-white font-medium col-span-4">
-                        Borrow now
+                        className={`col-span-4 py-3 rounded-lg font-medium ${book?.isAvailable ? 'bg-blue-600 text-white' : 'bg-amber-400 text-white cursor-not-allowed'}`}>
+                        {book?.isAvailable ? 'Borrow Book' : 'Register Queue'}
                     </button>
                 </div>
             </div>
 
             <BorrowConfirmation
+                isBookAvailable={book?.isAvailable || false}
+                queueCount={3}
                 isOpen={showBorrowConfirmation}
                 onConfirm={handleConfirmBorrow}
                 onCancel={handleCancel}

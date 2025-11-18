@@ -16,7 +16,6 @@ const getAllCategories = async () => {
     }
 
     const result = await data.json();
-    console.log('Fetched categories:', result);
     return result.data;
 }
 
