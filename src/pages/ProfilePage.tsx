@@ -1,8 +1,22 @@
-import { type FC } from 'react';
+import { type FC, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import ProfileMenuItem from '../components/ProfileMenuItem';
 import ProfileSection from '../components/ProfileSection';
+import { logout } from '../services/authService';
+import type { User } from '../types/Auth';
 
 const ProfilePage: FC = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   // Handlers untuk menu items
   const handlePersonalDetails = () => {
     // Navigate to personal details page
@@ -24,6 +38,13 @@ const ProfilePage: FC = () => {
     // Navigate to policies page
   };
 
+  const handleLogout = () => {
+    setIsLoading(true);
+    logout();
+    setIsLoading(false);
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen">
       {/* Main Content */}
@@ -39,8 +60,8 @@ const ProfilePage: FC = () => {
               />
             </div>
             <div>
-              <h2 className="text-lg font-medium text-gray-900">Marcus Geidt</h2>
-              <p className="text-sm text-gray-500">Member</p>
+              <h2 className="text-lg font-medium text-gray-900">{user?.username || 'User'}</h2>
+              <p className="text-sm text-gray-500">{user?.email || 'member@example.com'}</p>
             </div>
           </div>
         </div>
@@ -97,6 +118,21 @@ const ProfilePage: FC = () => {
               label="Policies & Terms"
               onClick={handlePolicies}
             />
+          </ProfileSection>
+
+          <ProfileSection title="Session">
+            <button
+              onClick={handleLogout}
+              disabled={isLoading}
+              className="w-full flex items-center gap-4 px-2 py-3 text-red-600 hover:bg-red-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <div className="flex-1 text-left">
+                <span className="text-sm font-medium">{isLoading ? 'Logging out...' : 'Logout'}</span>
+              </div>
+            </button>
           </ProfileSection>
         </div>
       </main>

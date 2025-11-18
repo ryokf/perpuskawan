@@ -1,46 +1,62 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import HomePage from './pages/HomePage.tsx'
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import LibraryPage from './pages/LibraryPage.tsx';
 import Layout from './Layout.tsx';
-import ProfilePage from './pages/ProfilePage.tsx';
-import NotificationPage from './pages/NotificationPage.tsx';
-import BookDetailPage from './pages/BookDetailPage.tsx';
-import SearchResultPage from './pages/SearchResultPage.tsx';
+import {
+  ProtectedHomePage,
+  ProtectedLibraryPage,
+  ProtectedProfilePage,
+  ProtectedNotificationPage,
+  ProtectedBookDetailPage,
+  ProtectedSearchResultPage,
+  PublicLoginPage,
+  PublicRegisterPage,
+} from './middleware/ProtectedRoutes.tsx';
 
 const router = createBrowserRouter([
+  {
+    path: '/login',
+    Component: PublicLoginPage,
+  },
+  {
+    path: '/register',
+    Component: PublicRegisterPage,
+  },
   {
     path: '/',
     Component: Layout,
     children: [
       {
         index: true,
-        Component: HomePage,
+        Component: ProtectedHomePage,
       },
       {
         path: '/library',
-        Component: LibraryPage,
+        Component: ProtectedLibraryPage,
       },
       {
         path: '/notifications',
-        Component: NotificationPage,
+        Component: ProtectedNotificationPage,
       },
       {
         path: '/profile',
-        Component: ProfilePage,
+        Component: ProtectedProfilePage,
       },
     ],
   },
   {
     path: '/books/:id',
-    Component: BookDetailPage,
+    Component: ProtectedBookDetailPage,
   },
   {
     path: '/search',
-    Component: SearchResultPage,
+    Component: ProtectedSearchResultPage,
+  },
+  {
+    path: '*',
+    Component: () => <Navigate to="/login" replace />,
   }
 ]);
 
