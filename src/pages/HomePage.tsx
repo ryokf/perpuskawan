@@ -64,7 +64,7 @@ function HomePage() {
 
   useEffect(() => {
     fetchBooks(activeCategory, searchQuery);
-  }, [activeCategory, fetchBooks]);
+  }, [activeCategory, searchQuery, fetchBooks]);
 
   useEffect(() => {
     fetchCategories();

@@ -22,7 +22,7 @@ const BookDetailPage: FC = () => {
     useEffect(() => {
         // Assuming bookId is 1 for demonstration; replace with actual ID as needed
         fetchBookDetail(bookId);
-    }, []);
+    }, [bookId]);
 
     console.log('Book detail:', book);
 
