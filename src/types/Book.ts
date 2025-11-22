@@ -1,7 +1,9 @@
 export interface Book {
   id: number;
   title: string;
-  category: string;
+  writer: {
+    name: string;
+  };
   rating?: number;
   isAvailable: boolean;
   photo: string;

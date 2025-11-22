@@ -6,6 +6,7 @@ import BorrowConfirmation from '../components/BorrowConfirmation';
 import { getDetailBook } from '../services/bookService';
 import type { DetailBook } from '../types/Book';
 // import type { Book } from '../types/Book';
+import SaveLibraryButton from '../components/SaveLibraryButton';
 
 const BookDetailPage: FC = () => {
     const navigate = useNavigate();
@@ -130,13 +131,15 @@ const BookDetailPage: FC = () => {
             {/* Bottom Actions */}
             <div className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 rounded-t-xl shadow-[0_-8px_16px_rgba(0,0,0,0.06)]">
                 <div className="grid grid-cols-6 gap-2">
-                    <button className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium">
-                        Save
-                    </button>
+                    {
+                        book && (
+                            <SaveLibraryButton book={book}></SaveLibraryButton>
+                        )
+                    }
                     <button className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium">
                         AI
                     </button>
-                    
+
                     <button
                         onClick={handleBorrow}
                         className={`col-span-4 py-3 rounded-lg font-medium ${book?.isAvailable ? 'bg-blue-600 text-white' : 'bg-amber-400 text-white cursor-not-allowed'}`}>

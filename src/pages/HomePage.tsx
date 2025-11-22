@@ -85,6 +85,8 @@ function HomePage() {
     console.log("Search query:", query);
   }
 
+  console.log('Books in HomePage:', books);
+
   return (
     <div className="min-h-screen">
       {/* <Header /> */}

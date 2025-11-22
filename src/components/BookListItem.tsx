@@ -14,22 +14,43 @@ interface BookListItemProps {
     };
 }
 
-const BookListItem: FC<BookListItemProps> = ({ title, writer, isAvailable, photo, duedate, category }) => {
+const BookListItem: FC<BookListItemProps> = ({ id,title, writer, isAvailable, photo, duedate, category, deletable }) => {
 
     const isOverdue = duedate ? new Date(duedate) < new Date() : false;
     const formattedDueDate = duedate ? new Date(duedate).toLocaleDateString() : null;
 
-    console.log(category)
+    const handleDeleteSavedBook = () => {
+        const savedBooks = localStorage.getItem('savedBooks');
+        if (savedBooks) {
+            const books = JSON.parse(savedBooks);
+            const filteredBooks = books.filter((item: { book: { id: number; }; }) => item.book.id !== id);
+            localStorage.setItem('savedBooks', JSON.stringify(filteredBooks));
+        }
+        window.location.reload();
+    }
 
     return (
-        <div className="flex items-center gap-4 p-3 bg-white rounded-lg">
+        <a href={`/books/${id}`} className="flex items-center gap-4 p-3 bg-white rounded-lg">
             <img
                 src={photo}
                 alt={title}
                 className="w-20 aspect-3/4 object-cover rounded-md"
             />
             <div className="flex-1 min-w-0">
-                <p className='text-xs text-blue-500 font-medium'>{category.category}</p>
+                <div className="flex justify-between">
+                    <p className='text-xs text-blue-500 font-medium'>{category.category}</p>
+                    {deletable && (
+                    <button
+                        className='text-sm text-gray-400 relative'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleDeleteSavedBook();
+                        }}
+                    >
+                        X
+                    </button>
+                    )}
+                </div>
                 <h3 className="font-semibold text-sm text-gray-900 truncate">{title}</h3>
                 <p className="text-xs text-gray-500 mt-1">{writer?.name || 'Unknown Author'}</p>
                 {/* <div className="flex items-center my-2">
@@ -69,7 +90,7 @@ const BookListItem: FC<BookListItemProps> = ({ title, writer, isAvailable, photo
 
                 </div>
             </div>
-        </div>
+        </a>
     );
 };
 

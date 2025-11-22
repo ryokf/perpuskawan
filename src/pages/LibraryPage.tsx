@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState, useMemo } from 'react';
+import { type FC, useEffect, useState} from 'react';
 import LibraryTabs from '../components/LibraryTabs';
 import BookListItem from '../components/BookListItem';
 import getLoansData from '../services/loanServices';
@@ -9,135 +9,29 @@ const LibraryPage: FC = () => {
     const [books, setBooks] = useState<Loan[]>([]);
     const tabs = ['Saved list', 'On borrow', 'Returned'];
 
-    // Sample data - replace with real data later
-    const sample = useMemo(() => [
-        {
-            id: 1,
-            bookId: 1,
-            userId: 1,
-            isDone: false,
-            isLate: false,
-            returnDate: '',
-            photo: 'https://picsum.photos/200/300',
-            isDamaged: false,
-            book: {
-                id: 1,
-                title: 'Fisika Kelas XI',
-                writer: {
-                    name: 'Suhardi'
-                },
-                available: false,
-                photo: 'https://picsum.photos/200/300',
-                category: { id: 1, category: 'Science' },
-                description: '',
-                queueCount: 0,
-                language: '',
-                isAvailable: false,
-                borrowedCount: 10
-            }
-        },
-        {
-            id: 2,
-            bookId: 2,
-            userId: 1,
-            isDone: false,
-            isLate: false,
-            returnDate: '',
-            photo: 'https://picsum.photos/200/301',
-            isDamaged: false,
-            book: {
-                id: 2,
-                title: 'Fisika Teknik',
-                writer: {
-                    name: 'Muhammad Arsyad'
-                },
-                available: true,
-                photo: 'https://picsum.photos/200/301',
-                category: { id: 1, category: 'Science' },
-                description: '',
-                queueCount: 0,
-                language: '',
-                isAvailable: true,
-                borrowedCount: 15
-            }
-        },
-        {
-            id: 3,
-            bookId: 3,
-            userId: 1,
-            isDone: false,
-            isLate: false,
-            returnDate: '',
-            photo: 'https://picsum.photos/200/302',
-            isDamaged: false,
-            book: {
-                id: 3,
-                title: 'Pengantar Fisika Modern',
-                writer: {
-                    name: 'Prof.Dr.Tomo Djudin'
-                },
-                available: true,
-                photo: 'https://picsum.photos/200/302',
-                category: { id: 1, category: 'Science' },
-                description: '',
-                queueCount: 0,
-                language: '',
-                isAvailable: true,
-                borrowedCount: 20
-            }
-        },
-        {
-            id: 4,
-            bookId: 4,
-            userId: 1,
-            isDone: false,
-            isLate: false,
-            returnDate: '',
-            photo: 'https://picsum.photos/200/303',
-            isDamaged: false,
-            book: {
-                id: 4,
-                title: 'Fisika Dasar',
-                writer: {
-                    name: 'Philip Kristanto'
-                },
-                available: true,
-                photo: 'https://picsum.photos/200/303',
-                category: { id: 1, category: 'Science' },
-                description: '',
-                queueCount: 0,
-                language: '',
-                isAvailable: true,
-                borrowedCount: 25
-            }
-        }
-    ], []);
-
     const fetchLoansData = async (activeTab: string) => {
         const data = await getLoansData()
-        if(activeTab === 'On borrow') {
+        if (activeTab === 'On borrow') {
             const filteredData = data.filter((loan: Loan) => !loan.isDone);
             setBooks(filteredData);
             return;
         }
-        if(activeTab === 'Returned') {
+        if (activeTab === 'Returned') {
             const filteredData = data.filter((loan: Loan) => loan.isDone);
             setBooks(filteredData);
             return;
         }
-        setBooks(data); // Replace sample with data from getLoansData when available
     }
 
     useEffect(() => {
         if (activeTab === 'On borrow' || activeTab === 'Returned') {
             fetchLoansData(activeTab);
         } else {
-            // fetchLoansData();
-            setBooks(sample);
+            const data = localStorage.getItem('savedBooks');
+            console.log('Retrieved savedBooks from localStorage:', JSON.parse(data || '[]'));
+            setBooks(data ? JSON.parse(data) : []);
         }
-    }, [activeTab, sample]);
-
-    console.log('Loans data in LibraryPage:', books);
+    }, [activeTab]);
 
     return (
         <div className="min-h-screen">
@@ -156,11 +50,16 @@ const LibraryPage: FC = () => {
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
                 />
+                {
+                    books.length === 0 && (
+                        <p className="text-center text-gray-500 mt-10">No books found in this section.</p>
+                    )
+                }
                 <div className="space-y-3 mt-4">
                     {books.map((book) => (
                         <BookListItem
                             key={book.id}
-                            {...book.book}
+                            {...{...book.book, deletable: activeTab === 'Saved list' }}
                             duedate={book.returnDate}
                         />
                     ))}
