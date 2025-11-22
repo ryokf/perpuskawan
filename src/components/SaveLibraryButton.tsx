@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Book, DetailBook } from '../types/Book';
+import type { DetailBook } from '../types/Book';
 import Toast from './Toast';
 
 function SaveLibraryButton({ book }: { book: DetailBook }  ) {
@@ -9,7 +9,7 @@ function SaveLibraryButton({ book }: { book: DetailBook }  ) {
 
     const handleSaveToLibrary = () => {
         const savedBooks = localStorage.getItem('savedBooks');
-        const checkExisting = savedBooks ? JSON.parse(savedBooks).map((item: Book) => item.book.id).includes(book.id) : false;
+        const checkExisting = savedBooks ? JSON.parse(savedBooks).map((item: { book: { id: number } }) => item.book.id).includes(book.id) : false;
         if (checkExisting) {
             setToastMessage("Buku sudah ada di perpustakaan!");
             setToastType('error');
@@ -20,6 +20,8 @@ function SaveLibraryButton({ book }: { book: DetailBook }  ) {
         if (book) {
             books.push({"book": book});
             localStorage.setItem('savedBooks', JSON.stringify(books));
+            setToastMessage('Buku berhasil disimpan!');
+            setToastType('success');
             setShowToast(true);
         }
     }

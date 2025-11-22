@@ -12,6 +12,7 @@ interface BookListItemProps {
     category: {
         category: string
     };
+    deletable?: boolean;
 }
 
 const BookListItem: FC<BookListItemProps> = ({ id,title, writer, isAvailable, photo, duedate, category, deletable }) => {
