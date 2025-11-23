@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import BookInfoItem from '../components/BookInfoItem';
 import ReviewItem from '../components/ReviewItem';
 import BorrowConfirmation from '../components/BorrowConfirmation';
+import ChatPanel from '../components/ChatPanel';
 import { getDetailBook } from '../services/bookService';
 import type { DetailBook } from '../types/Book';
 // import type { Book } from '../types/Book';
@@ -11,6 +12,7 @@ import SaveLibraryButton from '../components/SaveLibraryButton';
 const BookDetailPage: FC = () => {
     const navigate = useNavigate();
     const [showBorrowConfirmation, setShowBorrowConfirmation] = useState(false);
+    const [showChatPanel,  setShowChatPanel] = useState(false);
     const [book, setBook] = useState<DetailBook | null>(null);
     const params = useParams();
     const bookId = Number(params.id); // Replace with actual book ID as needed
@@ -136,7 +138,10 @@ const BookDetailPage: FC = () => {
                             <SaveLibraryButton book={book}></SaveLibraryButton>
                         )
                     }
-                    <button className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium">
+                    <button 
+                        onClick={() => setShowChatPanel(true)}
+                        className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium hover:bg-blue-50 transition-colors"
+                    >
                         AI
                     </button>
 
@@ -154,6 +159,12 @@ const BookDetailPage: FC = () => {
                 isOpen={showBorrowConfirmation}
                 onConfirm={handleConfirmBorrow}
                 onCancel={handleCancel}
+            />
+
+            <ChatPanel 
+                isOpen={showChatPanel}
+                onClose={() => setShowChatPanel(false)}
+                bookTitle={book?.title}
             />
         </div>
     );
