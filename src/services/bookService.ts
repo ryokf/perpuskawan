@@ -15,7 +15,7 @@ const fetchBookData = async (categoryId: number, query: string): Promise<Book[]>
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUzLCJ1c2VybmFtZSI6InJ5byIsInN0YXR1cyI6Im1lbWJlciIsImlhdCI6MTc2MzM0NTQ1NywiZXhwIjoxNzYzOTUwMjU3fQ.d2V35EW7veTMaeMeG8IY3UNTmm9efzzMnlhyzIxsPHA`,
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 'ngrok-skip-browser-warning': 'true'
             }
         });
@@ -51,7 +51,7 @@ const getDetailBook = async (bookId: number): Promise<DetailBook | null> => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUzLCJ1c2VybmFtZSI6InJ5byIsInN0YXR1cyI6Im1lbWJlciIsImlhdCI6MTc2MzM0NTQ1NywiZXhwIjoxNzYzOTUwMjU3fQ.d2V35EW7veTMaeMeG8IY3UNTmm9efzzMnlhyzIxsPHA`,
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                 'ngrok-skip-browser-warning': 'true'
             }
         });
