@@ -12,7 +12,7 @@ import SaveLibraryButton from '../components/SaveLibraryButton';
 const BookDetailPage: FC = () => {
     const navigate = useNavigate();
     const [showBorrowConfirmation, setShowBorrowConfirmation] = useState(false);
-    const [showChatPanel,  setShowChatPanel] = useState(false);
+    const [showChatPanel, setShowChatPanel] = useState(false);
     const [book, setBook] = useState<DetailBook | null>(null);
     const params = useParams();
     const bookId = Number(params.id); // Replace with actual book ID as needed
@@ -138,7 +138,7 @@ const BookDetailPage: FC = () => {
                             <SaveLibraryButton book={book}></SaveLibraryButton>
                         )
                     }
-                    <button 
+                    <button
                         onClick={() => setShowChatPanel(true)}
                         className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium hover:bg-blue-50 transition-colors"
                     >
@@ -160,12 +160,15 @@ const BookDetailPage: FC = () => {
                 onConfirm={handleConfirmBorrow}
                 onCancel={handleCancel}
             />
-
-            <ChatPanel 
-                isOpen={showChatPanel}
-                onClose={() => setShowChatPanel(false)}
-                bookTitle={book?.title}
-            />
+            {
+                book && (
+                    <ChatPanel
+                        isOpen={showChatPanel}
+                        onClose={() => setShowChatPanel(false)}
+                        bookTitle={book.title}
+                        bookAuthor={book.writer?.name}
+                    />
+                )}
         </div>
     );
 };
