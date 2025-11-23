@@ -1,13 +1,14 @@
 import { type FC, useEffect, useState} from 'react';
 import LibraryTabs from '../components/LibraryTabs';
 import BookListItem from '../components/BookListItem';
-import getLoansData from '../services/loanServices';
+import {getLoansData} from '../services/loanServices';
 import type { Loan } from '../types/Loan';
+import { getReservation } from '../services/reservationService';
 
 const LibraryPage: FC = () => {
-    const [activeTab, setActiveTab] = useState('Saved list');
+    const [activeTab, setActiveTab] = useState('Reservations');
     const [books, setBooks] = useState<Loan[]>([]);
-    const tabs = ['Saved list', 'On borrow', 'Returned'];
+    const tabs = ['Reservations', 'On borrow', 'Returned'];
 
     const fetchLoansData = async (activeTab: string) => {
         const data = await getLoansData()
@@ -23,13 +24,16 @@ const LibraryPage: FC = () => {
         }
     }
 
+    const fetchReservationsData = async () => {
+        const data = await getReservation();
+        setBooks(data);
+    }
+
     useEffect(() => {
         if (activeTab === 'On borrow' || activeTab === 'Returned') {
             fetchLoansData(activeTab);
         } else {
-            const data = localStorage.getItem('savedBooks');
-            console.log('Retrieved savedBooks from localStorage:', JSON.parse(data || '[]'));
-            setBooks(data ? JSON.parse(data) : []);
+            fetchReservationsData();
         }
     }, [activeTab]);
 
@@ -59,8 +63,9 @@ const LibraryPage: FC = () => {
                     {books.map((book) => (
                         <BookListItem
                             key={book.id}
-                            {...{...book.book, deletable: activeTab === 'Saved list' }}
+                            {...{...book.book, deletable: false }}
                             duedate={book.returnDate}
+                            isCollectionItem={false}
                         />
                     ))}
                 </div>

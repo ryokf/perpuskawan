@@ -1,8 +1,8 @@
 import API_URL from "../config/apiUrl";
 
-const getLoansData = async () => {
+const getReservation = async () => {
     try {
-        const url = API_URL + '/loans';
+        const url = API_URL + `/reservations`;
 
         const data = await fetch(url, {
             method: 'GET',
@@ -14,21 +14,21 @@ const getLoansData = async () => {
         });
 
         if (!data.ok) {
-            console.error('Failed to fetch loans data:', data.statusText);
+            console.error('Failed to fetch reservations data:', data.statusText);
             return [];
         }
 
         const result = await data.json();
         return result.data;
     } catch (error) {
-        console.error('Error fetching loans data:', error);
+        console.error('Error fetching reservations data:', error);
         return [];
     }       
 }
 
-const createLoan = async (bookId: number) => {
+const createReservation = async (bookId: number) => {
     try {
-        const url = API_URL + '/loans';
+        const url = API_URL + '/reservations';
 
         const data = await fetch(url, {
             method: 'POST',
@@ -41,16 +41,16 @@ const createLoan = async (bookId: number) => {
         });
 
         if (!data.ok) {
-            console.error('Failed to create loan:', data.statusText);
+            console.error('Failed to create reservation:', data.statusText);
             return null;
         }
 
         const result = await data.json();
         return result.data;
     } catch (error) {
-        console.log('Error creating loan:', error);
+        console.log('Error creating reservation:', error);
         return null;
     }
 }
 
-export { getLoansData, createLoan };
+export { getReservation, createReservation };

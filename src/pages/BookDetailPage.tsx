@@ -8,6 +8,8 @@ import { getDetailBook } from '../services/bookService';
 import type { DetailBook } from '../types/Book';
 // import type { Book } from '../types/Book';
 import SaveLibraryButton from '../components/SaveLibraryButton';
+import { createLoan } from '../services/loanServices';
+import { createReservation } from '../services/reservationService';
 
 const BookDetailPage: FC = () => {
     const navigate = useNavigate();
@@ -33,8 +35,25 @@ const BookDetailPage: FC = () => {
         setShowBorrowConfirmation(true);
     };
 
-    const handleConfirmBorrow = () => {
+    const handleConfirmBorrow = async () => {
         // Handle borrow confirmation
+        if (book) {
+            if (book.isAvailable) {
+                const result = await createLoan(book.id);
+                if (result) {
+                    alert('Book borrowed successfully!');
+                } else {
+                    alert('Failed to borrow the book. Please try again.');
+                }
+            }else{
+                const result = await createReservation(book.id);
+                if (result) {
+                    alert('Book borrowed successfully!');
+                } else {
+                    alert('Failed to borrow the book. Please try again.');
+                }
+            }
+        }
         setShowBorrowConfirmation(false);
     };
 

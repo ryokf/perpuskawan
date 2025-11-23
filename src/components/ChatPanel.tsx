@@ -44,7 +44,7 @@ function ChatPanel({ isOpen, onClose, bookTitle, bookAuthor }: ChatPanelProps) {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: '1',
-            text: `Halo! Saya adalah AI Assistant. Tanyakan apa pun tentang "${bookTitle}" atau pinjam buku ini.`,
+            text: `Halo! Saya adalah buku ${bookTitle}. Tanyakan apa pun tentang saya.`,
             sender: 'ai',
             timestamp: new Date(),
         }

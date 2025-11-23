@@ -13,6 +13,7 @@ import {
   ProtectedSearchResultPage,
   PublicLoginPage,
   PublicRegisterPage,
+  ProtectedCollectionPage,
 } from './middleware/ProtectedRoutes.tsx';
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/library',
         Component: ProtectedLibraryPage,
+      },
+      {
+        path: '/collections',
+        Component: ProtectedCollectionPage,
       },
       {
         path: '/notifications',

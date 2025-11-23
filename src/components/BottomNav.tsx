@@ -20,6 +20,16 @@ const BottomNav: FC = () => {
             active: true
         },
         {
+            name: 'Collections',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+            ),
+            link: '/collections',
+            active: false
+        },
+        {
             name: 'Library',
             icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,7 +63,7 @@ const BottomNav: FC = () => {
     const { pathname } = useLocation();
 
     return (
-        <nav className="rounded-full mx-4 mb-2 fixed bottom-0 left-0 right-0 bg-white shadow-md z-[9999]" style={{ boxShadow: '0 0 8px rgba(0,0,0,0.15)' }}>
+        <nav className="rounded-full max-w-screen mx-4 mb-2 fixed bottom-0 left-0 right-0 bg-white shadow-md z-50" style={{ boxShadow: '0 0 8px rgba(0,0,0,0.15)' }}>
             <div className="flex items-center justify-around">
                 {navItems.map((item) => {
                     const active = item.link === '/' ? pathname === '/' : pathname.startsWith(item.link);
@@ -61,14 +71,18 @@ const BottomNav: FC = () => {
                         <Link
                             to={item.link}
                             key={item.name}
-                            className="flex flex-col items-center py-3 px-5"
+                            className="flex flex-col items-center py-3"
                         >
                             <div className={active ? 'text-blue-600' : 'text-gray-400'}>
                                 {item.icon}
                             </div>
-                            <span className={`mt-1 text-xs ${active ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>
-                                {item.name}
-                            </span>
+                            {active &&
+                                (
+                                    <span className={`mt-1 text-xs ${active ? 'text-blue-600 font-medium' : 'text-gray-400'}`}>
+                                        {item.name}
+
+                                    </span>
+                                )}
                         </Link>
                     );
                 })}
