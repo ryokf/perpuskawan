@@ -27,12 +27,12 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
         <>
             {/* Overlay */}
             <div
-                className="fixed inset-0 bg-black/50 z-[51]"
+                className="fixed inset-0 bg-black/50 z-51"
                 onClick={onCancel}
             />
 
             {/* Modal */}
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[52] bg-white rounded-2xl shadow-2xl max-w-sm w-11/12 animate-fade-in">
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-52 bg-white rounded-2xl shadow-2xl max-w-sm w-11/12 animate-fade-in">
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-gray-200">
                     <h2 className="text-lg font-semibold text-gray-900">{title}</h2>

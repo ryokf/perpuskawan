@@ -53,4 +53,30 @@ const createReservation = async (bookId: number) => {
     }
 }
 
-export { getReservation, createReservation };
+const cancelReservation = async (reservationId: number) => {
+    try {
+        const url = API_URL + `/reservations`;
+
+        const data = await fetch(url, {
+            method: 'PUT',
+            body: JSON.stringify({ status: 'cancel', id: reservationId }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
+
+        if (!data.ok) {
+            console.error('Failed to cancel reservation:', data.statusText);
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.log('Error cancelling reservation:', error);
+        return false;
+    }
+}
+
+export { getReservation, createReservation, cancelReservation };

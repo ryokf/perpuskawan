@@ -1,5 +1,7 @@
 import { type FC, useState } from 'react';
 import ConfirmationModal from './ConfirmationModal';
+import { cancelReservation } from '../services/reservationService';
+import { createLoan } from '../services/loanServices';
 
 interface BookListItemProps {
     id: number;
@@ -15,9 +17,10 @@ interface BookListItemProps {
     };
     deletable?: boolean;
     isCollectionItem?: boolean;
+    reservationId?: number;
 }
 
-const BookListItem: FC<BookListItemProps> = ({ id, title, writer, isAvailable, photo, duedate, category, deletable, isCollectionItem }) => {
+const BookListItem: FC<BookListItemProps> = ({ id, title, writer, isAvailable, photo, duedate, category, deletable, isCollectionItem, reservationId }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [confirmationType, setConfirmationType] = useState<'borrow' | 'cancel' | 'delete'>('borrow');
 
@@ -53,14 +56,29 @@ const BookListItem: FC<BookListItemProps> = ({ id, title, writer, isAvailable, p
         }
     }
 
-    const handleConfirmAction = () => {
+    const handleConfirmAction = async () => {
+        console.log(id)
         setShowConfirmation(false);
         if (confirmationType === 'borrow') {
-            // Handle borrow action
-            console.log('Borrowing book:', title);
+            setConfirmationType('borrow');
+            const data = await createLoan(id);
+            if (data) {
+                alert('Book borrowed successfully!');
+                const savedBooks = localStorage.getItem('savedBooks');
+                if (savedBooks) {
+                    const books = JSON.parse(savedBooks);
+                    const filteredBooks = books.filter((item: { book: { id: number; }; }) => item.book.id !== id);
+                    localStorage.setItem('savedBooks', JSON.stringify(filteredBooks));
+                }
+                window.location.reload();
+            } else {
+                alert('Failed to borrow the book. Please try again.');
+            }
         } else if (confirmationType === 'cancel') {
-            // Handle cancel action
-            console.log('Canceling reservation for:', title);
+            const data = await cancelReservation(reservationId!);
+            if (data) {
+                setConfirmationType('cancel');
+            }
         }
     }
 

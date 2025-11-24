@@ -6,7 +6,6 @@ const CollectionPage: FC = () => {
     const [books, setBooks] = useState<Loan[]>([]);
 
     useEffect(() => {
-
         const data = localStorage.getItem('savedBooks');
         console.log('Retrieved savedBooks from localStorage:', JSON.parse(data || '[]'));
         setBooks(data ? JSON.parse(data) : []);

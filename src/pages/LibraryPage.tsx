@@ -37,6 +37,8 @@ const LibraryPage: FC = () => {
         }
     }, [activeTab]);
 
+    console.log('Library books:', books);
+
     return (
         <div className="min-h-screen">
             <div className="flex items-center justify-between px-5 pb-3">
@@ -66,6 +68,7 @@ const LibraryPage: FC = () => {
                             {...{...book.book, deletable: false }}
                             duedate={book.returnDate}
                             isCollectionItem={false}
+                            reservationId={activeTab === 'Reservations' ? book.id : undefined}
                         />
                     ))}
                 </div>
