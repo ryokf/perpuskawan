@@ -1,45 +1,95 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminTable from '../../components/admin/AdminTable';
+import { getAllLoans } from '../../services/loanServices';
 
 interface Loan {
     [key: string]: unknown;
     id: number;
-    username: string;
-    bookTitle: string;
-    borrowDate: string;
-    dueDate: string;
-    status: string;
+    user?: { username?: string };
+    book?: { title?: string };
+    loan_date?: string;
+    return_date?: string;
+    isDone?: boolean;
 }
 
 const AdminLoans: FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [loans, setLoans] = useState<Loan[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const [loans] = useState<Loan[]>([
-        { id: 1, username: 'john_doe', bookTitle: 'The Great Gatsby', borrowDate: '2024-11-01', dueDate: '2024-11-15', status: 'Active' },
-        { id: 2, username: 'jane_smith', bookTitle: '1984', borrowDate: '2024-11-05', dueDate: '2024-11-19', status: 'Active' },
-        { id: 3, username: 'bob_johnson', bookTitle: 'Pride and Prejudice', borrowDate: '2024-10-01', dueDate: '2024-10-15', status: 'Overdue' },
-    ]);
+    useEffect(() => {
+        const fetchLoans = async () => {
+            try {
+                setLoading(true);
+                const fetchedLoans = await getAllLoans();
+                setLoans(fetchedLoans || []);
+                setError(null);
+            } catch (err) {
+                setError('Failed to load loans');
+                console.error('Error loading loans:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLoans();
+    }, []);
 
     const columns = [
         { key: 'id', label: 'ID' },
-        { key: 'username', label: 'User' },
-        { key: 'bookTitle', label: 'Book Title' },
-        { key: 'borrowDate', label: 'Borrow Date' },
-        { key: 'dueDate', label: 'Due Date' },
         {
-            key: 'status',
+            key: 'user',
+            label: 'User',
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const user = row.user as Record<string, unknown> | undefined;
+                const username = user?.username ? String(user.username) : 'Unknown User';
+                return <span className="text-gray-900">{username}</span>;
+            },
+        },
+        {
+            key: 'book',
+            label: 'Book Title',
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const book = row.book as Record<string, unknown> | undefined;
+                const title = book?.title ? String(book.title) : 'Unknown Book';
+                return <span className="font-medium text-gray-900">{title}</span>;
+            },
+        },
+        {
+            key: 'loan_date',
+            label: 'Borrow Date',
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const date = String(row.loan_date || '-');
+                return <span className="text-gray-600">{date.split('T')[0]}</span>;
+            },
+        },
+        {
+            key: 'return_date',
+            label: 'Due Date',
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const date = String(row.return_date || '-');
+                return <span className="text-gray-600">{date.split('T')[0]}</span>;
+            },
+        },
+        {
+            key: 'isDone',
             label: 'Status',
-            render: (_: unknown, row: Record<string, unknown>) => (
-                <span className={`px-2 py-1 text-xs rounded ${
-                    String(row.status) === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                }`}>
-                    {String(row.status)}
-                </span>
-            ),
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const isDone = row.isDone === true;
+                const status = isDone ? 'Returned' : 'Active';
+                return (
+                    <span className={`px-2 py-1 text-xs rounded font-medium ${
+                        isDone
+                            ? 'bg-gray-100 text-gray-800'
+                            : 'bg-green-100 text-green-800'
+                    }`}>
+                        {status}
+                    </span>
+                );
+            },
         },
     ];
 
@@ -55,19 +105,64 @@ const AdminLoans: FC = () => {
                 />
 
                 <main className="flex-1 overflow-y-auto p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h3 className="text-lg font-semibold text-gray-900">Loans List</h3>
-                            <p className="text-sm text-gray-600">Total: {loans.length} loans</p>
+                    {loading ? (
+                        <div className="flex items-center justify-center h-64">
+                            <div className="flex flex-col items-center">
+                                <div className="w-12 h-12 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin" />
+                                <p className="mt-4 text-gray-600">Loading loans...</p>
+                            </div>
                         </div>
-                    </div>
+                    ) : error ? (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="text-red-900 font-semibold">Error Loading Loans</h4>
+                                    <p className="text-red-700 text-sm mt-1">{error}</p>
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        setError(null);
+                                        setLoading(true);
+                                        const fetch = async () => {
+                                            try {
+                                                const data = await getAllLoans();
+                                                setLoans(data || []);
+                                                setError(null);
+                                            } catch (err: unknown) {
+                                                setError('Failed to load loans');
+                                            } finally {
+                                                setLoading(false);
+                                            }
+                                        };
+                                        fetch();
+                                    }}
+                                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm font-medium"
+                                >
+                                    Retry
+                                </button>
+                            </div>
+                        </div>
+                    ) : loans.length === 0 ? (
+                        <div className="flex items-center justify-center h-64">
+                            <p className="text-gray-600 text-lg">No loans found</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Loans List</h3>
+                                    <p className="text-sm text-gray-600">Total: {loans.length} loans</p>
+                                </div>
+                            </div>
 
-                    <div className="bg-white rounded-lg shadow-sm">
-                        <AdminTable
-                            columns={columns}
-                            data={loans as unknown as Record<string, unknown>[]}
-                        />
-                    </div>
+                            <div className="bg-white rounded-lg shadow-sm">
+                                <AdminTable
+                                    columns={columns}
+                                    data={loans as unknown as Record<string, unknown>[]}
+                                />
+                            </div>
+                        </>
+                    )}
                 </main>
             </div>
         </div>

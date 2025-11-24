@@ -1,46 +1,95 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminTable from '../../components/admin/AdminTable';
+import { getAllUsers } from '../../services/userManagementService';
 
 interface User {
     [key: string]: unknown;
     id: number;
     username: string;
     email: string;
-    role: string;
-    joinDate: string;
+    status?: string;
 }
 
 const AdminUsers: FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Mock data
-    const [users] = useState<User[]>([
-        { id: 1, username: 'john_doe', email: 'john@example.com', role: 'User', joinDate: '2024-01-15' },
-        { id: 2, username: 'jane_smith', email: 'jane@example.com', role: 'User', joinDate: '2024-02-20' },
-        { id: 3, username: 'admin_user', email: 'admin@example.com', role: 'Admin', joinDate: '2023-12-01' },
-    ]);
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                setLoading(true);
+                const fetchedUsers = await getAllUsers();
+                setUsers(fetchedUsers || []);
+                setError(null);
+            } catch (err) {
+                setError('Failed to load users');
+                console.error('Error loading users:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
 
     const columns = [
         { key: 'id', label: 'ID' },
         { key: 'username', label: 'Username' },
         { key: 'email', label: 'Email' },
         {
-            key: 'role',
-            label: 'Role',
-            render: (_: unknown, row: Record<string, unknown>) => (
-                <span className={`px-2 py-1 text-xs rounded ${
-                    String(row.role) === 'Admin'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-blue-100 text-blue-800'
-                }`}>
-                    {String(row.role)}
-                </span>
-            ),
+            key: 'status',
+            label: 'Status',
+            render: (_: unknown, row: Record<string, unknown>) => {
+                const status = String(row.status || 'user');
+                return (
+                    <span className={`px-2 py-1 text-xs rounded ${
+                        status === 'staff' || status === 'admin'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-blue-100 text-blue-800'
+                    }`}>
+                        {status}
+                    </span>
+                );
+            },
         },
-        { key: 'joinDate', label: 'Join Date' },
     ];
+
+    if (loading) {
+        return (
+            <div className="flex h-screen bg-gray-100">
+                <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Loading users...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex h-screen bg-gray-100">
+                <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <p className="text-red-600 font-semibold mb-4">{error}</p>
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        >
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -49,7 +98,6 @@ const AdminUsers: FC = () => {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <AdminHeader
                     title="Users Management"
-                    description="Manage all users in the library"
                     onMenuClick={() => setSidebarOpen(!sidebarOpen)}
                 />
 
@@ -62,10 +110,16 @@ const AdminUsers: FC = () => {
                     </div>
 
                     <div className="bg-white rounded-lg shadow-sm">
-                        <AdminTable
-                            columns={columns}
-                            data={users as unknown as Record<string, unknown>[]}
-                        />
+                        {users.length > 0 ? (
+                            <AdminTable
+                                columns={columns}
+                                data={users as unknown as Record<string, unknown>[]}
+                            />
+                        ) : (
+                            <div className="p-6 text-center text-gray-600">
+                                No users found
+                            </div>
+                        )}
                     </div>
                 </main>
             </div>
