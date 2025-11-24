@@ -15,6 +15,14 @@ import {
   PublicRegisterPage,
   ProtectedCollectionPage,
 } from './middleware/ProtectedRoutes.tsx';
+import AdminRoute from './middleware/AdminRoute.tsx';
+import AdminDashboard from './pages/admin/AdminDashboard.tsx';
+import AdminBooks from './pages/admin/AdminBooks.tsx';
+import AdminUsers from './pages/admin/AdminUsers.tsx';
+import AdminCategories from './pages/admin/AdminCategories.tsx';
+import AdminWriters from './pages/admin/AdminWriters.tsx';
+import AdminLoans from './pages/admin/AdminLoans.tsx';
+import AdminReservations from './pages/admin/AdminReservations.tsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +32,34 @@ const router = createBrowserRouter([
   {
     path: '/register',
     Component: PublicRegisterPage,
+  },
+  {
+    path: '/admin',
+    Component: () => <AdminRoute Component={AdminDashboard} />,
+  },
+  {
+    path: '/admin/books',
+    Component: () => <AdminRoute Component={AdminBooks} />,
+  },
+  {
+    path: '/admin/users',
+    Component: () => <AdminRoute Component={AdminUsers} />,
+  },
+  {
+    path: '/admin/categories',
+    Component: () => <AdminRoute Component={AdminCategories} />,
+  },
+  {
+    path: '/admin/writers',
+    Component: () => <AdminRoute Component={AdminWriters} />,
+  },
+  {
+    path: '/admin/loans',
+    Component: () => <AdminRoute Component={AdminLoans} />,
+  },
+  {
+    path: '/admin/reservations',
+    Component: () => <AdminRoute Component={AdminReservations} />,
   },
   {
     path: '/',

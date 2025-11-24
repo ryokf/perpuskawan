@@ -92,4 +92,16 @@ const isAuthenticated = (): boolean => {
     return !!getToken();
 };
 
-export { login, register, logout, getToken, isAuthenticated };
+const isStaff = (): boolean => {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return false;
+    
+    try {
+        const user = JSON.parse(userStr);
+        return user.status === 'staff';
+    } catch {
+        return false;
+    }
+};
+
+export { login, register, logout, getToken, isAuthenticated, isStaff };
