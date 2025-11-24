@@ -26,6 +26,30 @@ const getLoansData = async () => {
     }       
 }
 
+const getAllLoans = async () => {
+    try {
+        const url = API_URL + '/loans';
+
+        const data = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
+        if (!data.ok) {
+            console.error('Failed to fetch all loans:', data.statusText);
+            return [];
+        }
+        const result = await data.json();
+        return result.data;
+    } catch (error) {
+        console.error('Error fetching all loans:', error);
+        return [];
+    }
+}
+
 const createLoan = async (bookId: number) => {
     try {
         const url = API_URL + '/loans';
@@ -53,4 +77,4 @@ const createLoan = async (bookId: number) => {
     }
 }
 
-export { getLoansData, createLoan };
+export { getLoansData, getAllLoans, createLoan };

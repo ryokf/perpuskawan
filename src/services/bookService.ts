@@ -43,6 +43,29 @@ const fetchBookData = async (categoryId: number, query: string): Promise<Book[]>
     }
 }
 
+const getAllBooks = async (): Promise<Book[]> => {
+    try {
+        const url = API_URL + '/books'; 
+        const data = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                'ngrok-skip-browser-warning': 'true'
+            }
+        }); 
+        if (!data.ok) {
+            console.error('Failed to fetch all books:', data.statusText);
+            return [];
+        } 
+        const result = await data.json();
+        return result.data; 
+    } catch (error) {
+        console.error('Error fetching all books:', error);
+        return [];
+    }
+}
+
 const getDetailBook = async (bookId: number): Promise<DetailBook | null> => {
     try {
         const url = API_URL + '/books/' + bookId;
@@ -91,4 +114,4 @@ const getDetailBook = async (bookId: number): Promise<DetailBook | null> => {
     }
 }
 
-export { fetchBookData, getDetailBook };
+export { fetchBookData, getDetailBook, getAllBooks };
