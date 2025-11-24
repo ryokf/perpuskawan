@@ -129,7 +129,7 @@ const AdminLoans: FC = () => {
                                                 setLoans(data || []);
                                                 setError(null);
                                             } catch (err: unknown) {
-                                                setError('Failed to load loans');
+                                                setError('Failed to load loans: ' + String(err));
                                             } finally {
                                                 setLoading(false);
                                             }

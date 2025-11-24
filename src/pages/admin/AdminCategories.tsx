@@ -83,7 +83,7 @@ const AdminCategories: FC = () => {
                                                 setCategories(data || []);
                                                 setError(null);
                                             } catch (err: unknown) {
-                                                setError('Failed to load categories');
+                                                setError('Failed to load categories: ' + String(err));
                                             } finally {
                                                 setLoading(false);
                                             }

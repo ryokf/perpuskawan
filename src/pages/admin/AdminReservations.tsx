@@ -127,7 +127,7 @@ const AdminReservations: FC = () => {
                                                 setReservations(data || []);
                                                 setError(null);
                                             } catch (err: unknown) {
-                                                setError('Failed to load reservations');
+                                                setError('Failed to load reservations: ' + String(err));
                                             } finally {
                                                 setLoading(false);
                                             }

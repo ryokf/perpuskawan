@@ -82,7 +82,7 @@ const AdminWriters: FC = () => {
                                                 setWriters(data || []);
                                                 setError(null);
                                             } catch (err: unknown) {
-                                                setError('Failed to load writers');
+                                                setError('Failed to load writers: ' + String(err));
                                             } finally {
                                                 setLoading(false);
                                             }
