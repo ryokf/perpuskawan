@@ -7,7 +7,7 @@ const Layout = () => {
         <div>
             <header className="flex items-center px-5 py-5 gap-2">
                 <img src="Logo.png" alt="" />
-                <h1 className="text-xl font-semibold">Perpuskawan</h1>
+                <h1 className="text-xl font-semibold">Pinjam Buku</h1>
             </header>
             <Outlet></Outlet>
             <BottomNav></BottomNav>

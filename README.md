@@ -1,8 +1,8 @@
-# 📚 Perpuskawan Project Documentation Index
+# 📚 Pinjam Buku Project Documentation Index
 
 ## 📖 Complete Documentation Guide
 
-Selamat datang di dokumentasi project **Perpuskawan** - Library Management Application. Panduan ini membantu Anda memahami project secara menyeluruh dan menavigasi dokumentasi yang tersedia.
+Selamat datang di dokumentasi project **Pinjam Buku** - Library Management Application. Panduan ini membantu Anda memahami project secara menyeluruh dan menavigasi dokumentasi yang tersedia.
 
 ---
 
@@ -383,7 +383,7 @@ Start Here
 
 **Week 1 Reading**:
 
-1. README.md (10 min) - What is Perpuskawan?
+1. README.md (10 min) - What is Pinjam Buku?
 2. QUICK_REFERENCE.md (5 min) - Key concepts
 3. PROJECT_ANALYSIS.md (20 min) - Full picture
 4. VISUALIZATION.md (10 min) - See the flow

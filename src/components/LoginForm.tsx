@@ -48,7 +48,7 @@ const LoginForm = () => {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-indigo-600 mb-2">Perpuskawan</h1>
+            <h1 className="text-3xl font-bold text-indigo-600 mb-2">Pinjam Buku</h1>
             <p className="text-gray-600">Masuk ke akun Anda</p>
           </div>
 
