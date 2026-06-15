@@ -8,12 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://37b611198025.ngrok-free.app/api/',
+        target: 'http://13.250.17.233:5000/api/',
         changeOrigin: true,
         secure: false,
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
       },
     },
   },
