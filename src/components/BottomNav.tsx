@@ -63,7 +63,7 @@ const BottomNav: FC = () => {
     const { pathname } = useLocation();
 
     return (
-        <nav className="rounded-full max-w-screen mx-4 mb-2 fixed bottom-0 left-0 right-0 bg-white shadow-md z-50" style={{ boxShadow: '0 0 8px rgba(0,0,0,0.15)' }}>
+        <nav className="md:hidden rounded-full max-w-screen mx-4 mb-2 fixed bottom-0 left-0 right-0 bg-white shadow-md z-50" style={{ boxShadow: '0 0 8px rgba(0,0,0,0.15)' }}>
             <div className="flex items-center justify-around">
                 {navItems.map((item) => {
                     const active = item.link === '/' ? pathname === '/' : pathname.startsWith(item.link);

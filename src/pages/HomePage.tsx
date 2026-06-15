@@ -90,10 +90,20 @@ function HomePage() {
   return (
     <div className="min-h-screen">
       {/* <Header /> */}
-      <main className="container px-5 mx-auto pb-24">
-        <div className="flex items-center mb-6 justify-between">
-          <h1 className="text-2xl font-bold mb-6">Mau Pinjam Buku Apa Hari ini?</h1>
-          <img src="hero.png" alt="" />
+      <main className="container px-5 mx-auto pb-24 md:pb-10 md:pt-6">
+        
+        <div className="flex flex-col-reverse md:flex-row items-center mb-8 justify-between bg-blue-50 rounded-3xl p-6 md:p-12">
+          <div className="w-full md:w-1/2">
+            <h1 className="text-3xl md:text-5xl font-bold text-blue-900 leading-tight mb-4 text-center md:text-left">
+              Mau Pinjam Buku Apa Hari ini?
+            </h1>
+            <p className="text-gray-600 text-center md:text-left md:text-lg mb-6">
+              Temukan ribuan koleksi buku menarik dan pinjam dengan mudah langsung dari layar Anda.
+            </p>
+          </div>
+          <div className="w-full md:w-1/3 flex justify-center mb-6 md:mb-0">
+            <img src="hero.png" alt="Hero" className="w-48 md:w-full object-contain" />
+          </div>
         </div>
 
         <SearchBar
