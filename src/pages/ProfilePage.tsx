@@ -48,7 +48,7 @@ const ProfilePage: FC = () => {
   return (
     <div className="min-h-screen">
       {/* Main Content */}
-      <main className="pt-4 pb-24 px-5">
+      <main className="pt-4 pb-24 md:pb-10 px-5 max-w-2xl mx-auto">
         {/* Profile Info */}
         <div className="py-6 bg-white">
           <div className="flex items-center gap-4">

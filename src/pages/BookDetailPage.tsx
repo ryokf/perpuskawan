@@ -65,7 +65,7 @@ const BookDetailPage: FC = () => {
         <div className="min-h-screen bg-white">
             {/* Header */}
             <div className="fixed top-0 left-0 right-0 z-10 bg-white">
-                <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex items-center justify-between px-4 py-3 max-w-3xl mx-auto">
                     <button
                         onClick={() => navigate(-1)}
                         className="p-2 -ml-2 text-gray-600"
@@ -83,9 +83,9 @@ const BookDetailPage: FC = () => {
             </div>
 
             {/* Main Content */}
-            <main className="pt-6 pb-24 px-5">
+            <main className="pt-6 pb-24 md:pb-10 px-5 max-w-3xl mx-auto">
                 {/* Book Cover */}
-                <div className="relative aspect-3/4 overflow-hidden p-12  ">
+                <div className="relative aspect-3/4 overflow-hidden p-12 max-w-md mx-auto">
                     <img
                         src={book?.photo || 'https://via.placeholder.com/300x400?text=No+Image'}
                         alt={book?.title || "Book Cover"}
@@ -105,7 +105,7 @@ const BookDetailPage: FC = () => {
                     </p>
 
                     {/* Book Details Grid */}
-                    <div className="grid grid-cols-2 gap-6 mb-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
                         <BookInfoItem label="Queue" value={`${book?.queueCount == 0 ? "There is no queue" : `${book?.queueCount} Person`}`} />
                         <BookInfoItem label="Borrowed by" value="240 Person" />
                         <BookInfoItem label="Writer" value={book?.writer?.name || ""} />
@@ -151,24 +151,26 @@ const BookDetailPage: FC = () => {
 
             {/* Bottom Actions */}
             <div className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 rounded-t-xl shadow-[0_-8px_16px_rgba(0,0,0,0.06)]">
-                <div className="grid grid-cols-6 gap-2">
-                    {
-                        book && (
-                            <SaveLibraryButton book={book}></SaveLibraryButton>
-                        )
-                    }
-                    <button
-                        onClick={() => setShowChatPanel(true)}
-                        className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium hover:bg-blue-50 transition-colors"
-                    >
-                        AI
-                    </button>
+                <div className="max-w-3xl mx-auto">
+                    <div className="grid grid-cols-6 gap-2">
+                        {
+                            book && (
+                                <SaveLibraryButton book={book}></SaveLibraryButton>
+                            )
+                        }
+                        <button
+                            onClick={() => setShowChatPanel(true)}
+                            className="flex-1 py-3 border border-blue-600 rounded-lg text-blue-600 font-medium hover:bg-blue-50 transition-colors"
+                        >
+                            AI
+                        </button>
 
-                    <button
-                        onClick={handleBorrow}
-                        className={`col-span-4 py-3 rounded-lg font-medium ${book?.isAvailable ? 'bg-blue-600 text-white' : 'bg-amber-400 text-white cursor-not-allowed'}`}>
-                        {book?.isAvailable ? 'Borrow Book' : 'Register Queue'}
-                    </button>
+                        <button
+                            onClick={handleBorrow}
+                            className={`col-span-4 py-3 rounded-lg font-medium ${book?.isAvailable ? 'bg-blue-600 text-white' : 'bg-amber-400 text-white cursor-not-allowed'}`}>
+                            {book?.isAvailable ? 'Borrow Book' : 'Register Queue'}
+                        </button>
+                    </div>
                 </div>
             </div>
 

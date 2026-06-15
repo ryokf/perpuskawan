@@ -14,17 +14,17 @@ const CollectionPage: FC = () => {
 
     return (
         <div className="min-h-screen">
-            <div className="flex items-center justify-between px-5 pb-3">
+            <div className="flex items-center justify-between px-5 pb-3 max-w-4xl mx-auto">
                 <h1 className="text-xl font-semibold">Collections</h1>
             </div>
 
-            <main className="container mx-auto px-4 pb-24">
+            <main className="container mx-auto px-4 pb-24 md:pb-10 max-w-4xl">
                 {
                     books.length === 0 && (
                         <p className="text-center text-gray-500 mt-10">No books found in this section.</p>
                     )
                 }
-                <div className="space-y-3 mt-4">
+                <div className="space-y-3 mt-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
                     {books.map((book) => (
                         <BookListItem
                             key={book.id}

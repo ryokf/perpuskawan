@@ -41,7 +41,7 @@ const LibraryPage: FC = () => {
 
     return (
         <div className="min-h-screen">
-            <div className="flex items-center justify-between px-5 pb-3">
+            <div className="flex items-center justify-between px-5 pb-3 max-w-4xl mx-auto">
                 <h1 className="text-xl font-semibold">Library</h1>
                 <button className="p-2 text-gray-600 hover:text-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,7 +50,7 @@ const LibraryPage: FC = () => {
                 </button>
             </div>
 
-            <main className="container mx-auto px-4 pb-24">
+            <main className="container mx-auto px-4 pb-24 md:pb-10 max-w-4xl">
                 <LibraryTabs
                     tabs={tabs}
                     activeTab={activeTab}
@@ -61,7 +61,7 @@ const LibraryPage: FC = () => {
                         <p className="text-center text-gray-500 mt-10">No books found in this section.</p>
                     )
                 }
-                <div className="space-y-3 mt-4">
+                <div className="space-y-3 mt-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
                     {books.map((book) => (
                         <BookListItem
                             key={book.id}

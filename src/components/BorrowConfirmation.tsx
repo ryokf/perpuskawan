@@ -22,7 +22,7 @@ const BorrowConfirmation: FC<BorrowConfirmationProps> = ({ isOpen, onCancel, onC
             <div
                 role="dialog"
                 aria-modal="true"
-                className={`fixed bottom-0.5 bg-white rounded-t-2xl p-6 z-50 transform transition-transform duration-300 ease-out ${isOpen ? 'translate-y-0' : 'translate-y-[110%]'}`}
+                className={`fixed bottom-0.5 left-0 right-0 max-w-md mx-auto bg-white rounded-t-2xl p-6 z-50 transform transition-transform duration-300 ease-out ${isOpen ? 'translate-y-0' : 'translate-y-[110%]'}`}
             >
                 <div className="flex flex-col items-center text-center">
                     {/* Illustration */}

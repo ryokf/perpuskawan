@@ -32,7 +32,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({ isOpen, onClose }) => {
             )}
 
             {/* Sidebar */}
-            <aside className={`fixed right-0 top-0 h-full w-64 rounded-l-2xl bg-white transform transition-transform duration-300 z-40 md:relative md:translate-x-0 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <aside className={`fixed right-0 top-0 h-full w-64 rounded-l-2xl bg-white transform transition-transform duration-300 z-40 md:relative md:translate-x-0 md:flex-shrink-0 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <div className="p-6">
                     <h1 className="text-2xl font-bold">Admin</h1>
                     <p className="text-gray-400 text-sm mt-1">Pinjam Buku</p>

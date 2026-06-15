@@ -57,7 +57,7 @@ const NotificationPage: FC = () => {
     };
 
     return (
-        <div className="min-h-screen px-5">
+        <div className="min-h-screen px-5 max-w-3xl mx-auto">
 
             <div className="flex items-center justify-between py-3">
                 <h1 className="text-xl font-semibold">Notifications</h1>
@@ -76,7 +76,7 @@ const NotificationPage: FC = () => {
                 />
             </div>
 
-            <main className="container mx-auto pt-4 pb-24">
+            <main className="container mx-auto pt-4 pb-24 md:pb-10">
 
                 {getFilteredNotifications().map((notification) => (
                     <NotificationItem

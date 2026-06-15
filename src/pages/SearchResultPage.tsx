@@ -52,7 +52,7 @@ const SearchResultPage: FC = () => {
         <div className="min-h-screen bg-white">
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-10 bg-white shadow-sm">
-                <div className="flex items-center gap-3 px-4 py-3">
+                <div className="flex items-center gap-3 px-4 py-3 max-w-4xl mx-auto">
                     <button
                         onClick={() => navigate(-1)}
                         className="p-2 -ml-2 text-gray-600"
@@ -80,8 +80,8 @@ const SearchResultPage: FC = () => {
             </header>
 
             {/* Main Content */}
-            <main className="pt-20 pb-20 px-4">
-                <div className="space-y-4">
+            <main className="pt-20 pb-20 px-4 max-w-4xl mx-auto">
+                <div className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
                     {searchResults.map((book) => (
                         <div
                             key={book.id}

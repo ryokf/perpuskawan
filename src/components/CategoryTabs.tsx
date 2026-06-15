@@ -8,7 +8,7 @@ interface CategoryTabsProps {
 
 const CategoryTabs: FC<CategoryTabsProps> = ({ categories, activeCategory, onCategoryChange }) => {
     return (
-        <div className="flex gap-8 px-4 mt-2">
+        <div className="flex gap-4 md:gap-8 px-4 mt-2 overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
                 <button
                     key={category.id}

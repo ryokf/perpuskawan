@@ -155,7 +155,7 @@ function ChatPanel({ isOpen, onClose, bookTitle, bookAuthor }: ChatPanelProps) {
             />
 
             {/* Chat Panel */}
-            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] flex flex-col animate-fade-in">
+            <div className="fixed bottom-0 left-0 right-0 md:left-auto md:w-96 md:right-4 md:bottom-4 md:rounded-2xl z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] md:max-h-[600px] flex flex-col animate-fade-in">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
                     <div>
@@ -187,7 +187,7 @@ function ChatPanel({ isOpen, onClose, bookTitle, bookAuthor }: ChatPanelProps) {
                             className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
                             <div
-                                className={`max-w-xs px-4 py-2 rounded-lg ${message.sender === 'user'
+                                className={`max-w-xs md:max-w-sm px-4 py-2 rounded-lg ${message.sender === 'user'
                                     ? 'bg-blue-600 text-white rounded-br-none'
                                     : 'bg-gray-200 text-gray-900 rounded-bl-none'
                                     }`}
